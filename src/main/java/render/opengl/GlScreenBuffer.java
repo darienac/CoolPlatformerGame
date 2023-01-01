@@ -19,4 +19,14 @@ public class GlScreenBuffer extends GlFramebuffer {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glViewport(0, 0, window.getWidth(), window.getHeight());
     }
+
+    @Override
+    public int getWidth() {
+        return window.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return window.getHeight();
+    }
 }

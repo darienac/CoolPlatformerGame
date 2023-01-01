@@ -16,10 +16,10 @@ public class CroppedFillScreenCamera implements ICamera {
     public Matrix4f getViewProjectionMatrix() {
         float windowAspect = (float) window.getWidth() / window.getHeight();
         if (windowAspect > desiredAspect) {
-            float diff = windowAspect - desiredAspect;
+            float diff = (windowAspect - desiredAspect) / desiredAspect;
             return new Matrix4f().ortho2D(-0.5f - (diff * 0.5f), 0.5f + (diff * 0.5f), -0.5f, 0.5f);
         } else {
-            float diff = (1 / windowAspect) - (1 / desiredAspect);
+            float diff = ((1 / windowAspect) - (1 / desiredAspect)) * desiredAspect;
             return new Matrix4f().ortho2D(-0.5f, 0.5f, -0.5f - (diff * 0.5f), 0.5f + (diff * 0.5f));
         }
     }

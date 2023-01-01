@@ -1,5 +1,7 @@
 package render.opengl;
 
+import render.IWindow;
+
 import java.util.List;
 
 import static org.lwjgl.opengl.GL32.*;
@@ -50,5 +52,13 @@ public class GlFramebuffer {
     public void bind() {
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
         glViewport(0, 0, width, height);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

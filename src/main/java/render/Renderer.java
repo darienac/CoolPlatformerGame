@@ -65,7 +65,6 @@ public class Renderer {
         if (width != window.getWidth() || height != window.getHeight()) {
             width = window.getWidth();
             height = window.getHeight();
-            glViewport(0, 0, window.getWidth(), window.getHeight());
         }
 
         pixelatedBuffer.bind();
@@ -73,8 +72,7 @@ public class Renderer {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        offsetRenderGroup(res.getRenderGroup());
-        // renderObjectGroup(res.getRenderGroup(), res.getBasicCamera());
+        // offsetRenderGroup(res.getRenderGroup());
         renderScene(tileScene);
 
         cropScene.getRenderTarget().bind();
