@@ -2,17 +2,23 @@ package render;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import render.camera.BasicCamera;
-import render.opengl.GlFramebuffer;
-import render.opengl.GlRenderObject;
-import render.opengl.GlRenderObjectGroup;
-import render.opengl.Texture;
+import render.camera.Camera2D;
+import render.camera.CroppedFillScreenCamera;
+import render.camera.ICamera;
+import render.opengl.*;
 import render.shaders.SpritesShader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ResourceCache {
+    private static final int GAME_WIDTH = 432;
+    private static final int GAME_HEIGHT = 240;
+    private static final int TILE_RESOLUTION = 16;
+
     private static ResourceCache instance = null;
 
     public static ResourceCache getInstance() {
@@ -40,7 +46,15 @@ public class ResourceCache {
 
     private BasicCamera basicCamera = new BasicCamera();
 
+    private GlFramebuffer screenTarget;
+    private GlFramebuffer pixelatedBuffer;
+    private RenderScene cropScene;
+    private RenderScene tileScene;
+    private Camera2D tileCamera;
+    private GlRenderObjectGroup tileObjectGroup;
+
     private ResourceCache() throws Exception {
+        // Testing
         testShader = new SpritesShader("testShader_v.glsl", "testShader_f.glsl");
 
         createSquareMesh();
@@ -57,6 +71,24 @@ public class ResourceCache {
         spriteGrid.setSprite(1, 1, testSprite3);
         spriteGrid.setSprite(0, 0, testSprite2);
         spriteGrid.setSprite(2, 2, testSprite);
+    }
+
+    public void setupWindowRendering(IWindow window) {
+        // Screen Framebuffer (id: 0)
+        screenTarget = new GlScreenBuffer(window);
+
+        // cropScene setup
+        Texture pixelatedTexture = new Texture(GAME_WIDTH, GAME_HEIGHT);
+        pixelatedBuffer = new GlFramebuffer(Arrays.asList(pixelatedTexture), true);
+        Sprite pixelatedSprite = new Sprite(pixelatedTexture);
+        GlRenderObjectGroup objectGroup = new GlRenderObjectGroup(Arrays.asList(new GlRenderObject(pixelatedSprite, new Matrix4f())), pixelatedTexture, 1);
+        ICamera cropCamera = new CroppedFillScreenCamera(window, (float) GAME_WIDTH / GAME_HEIGHT);
+        cropScene = new RenderScene(cropCamera, Arrays.asList(objectGroup), screenTarget);
+
+        // tileScene setup
+        tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
+        tileObjectGroup = getSpriteGrid().createObjectGroup(tileCamera);
+        tileScene = new RenderScene(tileCamera, Arrays.asList(tileObjectGroup), pixelatedBuffer);
     }
 
     private Sprite chooseRandomSprite() {
@@ -142,5 +174,33 @@ public class ResourceCache {
 
     public SpriteGrid getSpriteGrid() {
         return spriteGrid;
+    }
+
+    public GlFramebuffer getScreenTarget() {
+        return screenTarget;
+    }
+
+    public GlFramebuffer getPixelatedBuffer() {
+        return pixelatedBuffer;
+    }
+
+    public RenderScene getCropScene() {
+        return cropScene;
+    }
+
+    public RenderScene getTileScene() {
+        return tileScene;
+    }
+
+    public Camera2D getTileCamera() {
+        return tileCamera;
+    }
+
+    public GlRenderObjectGroup getTileObjectGroup() {
+        return tileObjectGroup;
+    }
+
+    public void setTileObjectGroup(GlRenderObjectGroup tileObjectGroup) {
+        this.tileObjectGroup = tileObjectGroup;
     }
 }
