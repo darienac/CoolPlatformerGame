@@ -36,6 +36,7 @@ public class ResourceCache {
     private GlRenderObject glRenderObject;
     private GlRenderObject glRenderObject2;
     private GlRenderObjectGroup renderGroup;
+    private SpriteGrid spriteGrid;
 
     private BasicCamera basicCamera = new BasicCamera();
 
@@ -51,6 +52,11 @@ public class ResourceCache {
         testSprite4 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(1.0f, 1.0f));
 
         renderGroup = createLargeRenderGroup(1, 5_000);
+
+        spriteGrid = new SpriteGrid(testTexture, 3, 3, new Matrix4f());
+        spriteGrid.setSprite(1, 1, testSprite3);
+        spriteGrid.setSprite(0, 0, testSprite2);
+        spriteGrid.setSprite(2, 2, testSprite);
     }
 
     private Sprite chooseRandomSprite() {
@@ -132,5 +138,9 @@ public class ResourceCache {
 
     public BasicCamera getBasicCamera() {
         return basicCamera;
+    }
+
+    public SpriteGrid getSpriteGrid() {
+        return spriteGrid;
     }
 }

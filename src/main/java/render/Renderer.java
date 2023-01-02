@@ -55,7 +55,7 @@ public class Renderer {
 
         // tileScene setup
         ICamera tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
-        tileScene = new RenderScene(tileCamera, Arrays.asList(res.getRenderGroup()), pixelatedBuffer);
+        tileScene = new RenderScene(tileCamera, Arrays.asList(res.getSpriteGrid().createObjectGroup(tileCamera)), pixelatedBuffer);
 
         lastFramerateCheck = GLFW.glfwGetTime();
         framesPerSecond = 0;
