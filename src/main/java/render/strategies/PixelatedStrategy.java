@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
-public class PixelatedStrategy implements IRenderStrategy {
+public abstract class PixelatedStrategy implements IRenderStrategy {
     @Override
     public void render(GameState state, Renderer renderer) {
         ResourceCache res = ResourceCache.getInstance();
@@ -21,12 +21,7 @@ public class PixelatedStrategy implements IRenderStrategy {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        res.getTileCamera().setPosition(new Vector3f(state.getCameraX(), state.getCameraY(), 0.0f));
-        res.getTileObjectGroup().free();
-        res.setTileObjectGroup(res.getSpriteGrid().createObjectGroup(res.getTileCamera()));
-        // System.out.println("Tiles drawn: " + res.getTileObjectGroup().getRenderObjects().size());
-        res.getTileScene().setRenderGroups(Arrays.asList(res.getTileObjectGroup()));
-        renderer.renderScene(res.getTileScene());
+        renderPixelated(state, renderer);
 
         res.getCropScene().getRenderTarget().bind();
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -34,4 +29,6 @@ public class PixelatedStrategy implements IRenderStrategy {
 
         renderer.renderScene(res.getCropScene());
     }
+
+    protected abstract void renderPixelated(GameState state, Renderer renderer);
 }

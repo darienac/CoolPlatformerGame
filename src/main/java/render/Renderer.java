@@ -12,6 +12,7 @@ import render.opengl.*;
 import render.shaders.SpritesShader;
 import render.strategies.IRenderStrategy;
 import render.strategies.PixelatedStrategy;
+import render.strategies.TestStrategy;
 
 import java.util.Arrays;
 
@@ -42,7 +43,7 @@ public class Renderer {
 
         res.setupWindowRendering(window);
 
-        renderStrategy = new PixelatedStrategy();
+        renderStrategy = new TestStrategy();
 
         lastFramerateCheck = GLFW.glfwGetTime();
         framesPerSecond = 0;
