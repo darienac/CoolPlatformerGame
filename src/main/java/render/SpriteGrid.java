@@ -60,7 +60,7 @@ public class SpriteGrid {
             if (x >= width) {
                 break;
             }
-            for (int y = y0; y < y1; y++) {
+            for (int y = y0; y <= y1; y++) {
                 if (y < 0) {
                     continue;
                 }
