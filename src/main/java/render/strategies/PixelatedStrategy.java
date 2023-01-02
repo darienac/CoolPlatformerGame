@@ -9,7 +9,6 @@ import render.ResourceCache;
 import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public abstract class PixelatedStrategy implements IRenderStrategy {
     @Override
