@@ -38,4 +38,8 @@ public class GlBuffer {
     public void bind(int target) {
         glBindBuffer(target, bufferId);
     }
+
+    public void free() {
+        glDeleteBuffers(bufferId);
+    }
 }

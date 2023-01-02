@@ -1,5 +1,6 @@
 package render;
 
+import game.GameState;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -20,6 +21,7 @@ public class Renderer {
     private static final int TILE_RESOLUTION = 16;
 
     private IWindow window;
+    private GameState state;
     private ResourceCache res;
 
     private int width = 0;
@@ -31,9 +33,12 @@ public class Renderer {
     private GlFramebuffer pixelatedBuffer;
     private RenderScene cropScene;
     private RenderScene tileScene;
+    private Camera2D tileCamera;
+    private GlRenderObjectGroup tileObjectGroup;
 
-    public Renderer(IWindow window) {
+    public Renderer(IWindow window, GameState state) {
         this.window = window;
+        this.state = state;
         res = ResourceCache.getInstance();
 
         glEnable(GL_DEPTH_TEST);
@@ -54,14 +59,15 @@ public class Renderer {
         cropScene = new RenderScene(cropCamera, Arrays.asList(objectGroup), screenTarget);
 
         // tileScene setup
-        ICamera tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
-        tileScene = new RenderScene(tileCamera, Arrays.asList(res.getSpriteGrid().createObjectGroup(tileCamera)), pixelatedBuffer);
+        tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
+        tileObjectGroup = res.getSpriteGrid().createObjectGroup(tileCamera);
+        tileScene = new RenderScene(tileCamera, Arrays.asList(tileObjectGroup), pixelatedBuffer);
 
         lastFramerateCheck = GLFW.glfwGetTime();
         framesPerSecond = 0;
     }
 
-    public void render() {
+    public synchronized void render() {
         if (width != window.getWidth() || height != window.getHeight()) {
             width = window.getWidth();
             height = window.getHeight();
@@ -72,7 +78,11 @@ public class Renderer {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // offsetRenderGroup(res.getRenderGroup());
+        tileCamera.setPosition(new Vector3f(state.getCameraX(), state.getCameraY(), 0.0f));
+        tileObjectGroup.free();
+        tileObjectGroup = res.getSpriteGrid().createObjectGroup(tileCamera);
+        System.out.println("Tiles drawn: " + tileObjectGroup.getRenderObjects().size());
+        tileScene.setRenderGroups(Arrays.asList(tileObjectGroup));
         renderScene(tileScene);
 
         cropScene.getRenderTarget().bind();
@@ -87,13 +97,6 @@ public class Renderer {
             System.out.println("FPS: " + framesPerSecond);
             framesPerSecond = 0;
         }
-    }
-
-    private void offsetRenderGroup(GlRenderObjectGroup renderGroup) {
-        for (GlRenderObject glRenderObject : renderGroup.getRenderObjects()) {
-            glRenderObject.setTransform(glRenderObject.getTransform().translate((float) (Math.random() - 0.5f) * 0.1f, (float) (Math.random() - 0.5f) * 0.1f, 0.0f));
-        }
-        renderGroup.updateArrays();
     }
 
     public void renderObjectGroup(GlRenderObjectGroup objectGroup, ICamera camera) {

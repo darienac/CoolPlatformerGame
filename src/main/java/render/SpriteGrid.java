@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpriteGrid {
+    private static final float SPRITE_CULL_WIDTH = 1.0f;
+    private static final float SPRITE_CULL_HEIGHT = 1.0f;
+
     private Texture atlas;
     private final int width;
     private final int height;
@@ -43,13 +46,11 @@ public class SpriteGrid {
         normalizeMatrix.transform(bottomLeftCorner);
         Vector4f topRightCorner = new Vector4f(1.0f, 1.0f, 0.0f, 1.0f);
         normalizeMatrix.transform(topRightCorner);
-        System.out.println("bottom left: " + bottomLeftCorner);
-        System.out.println("top right: " + topRightCorner);
 
-        int x0 = (int) Math.floor(bottomLeftCorner.x);
-        int x1 = (int) Math.floor(topRightCorner.x) + 1;
-        int y0 = (int) Math.floor(bottomLeftCorner.y);
-        int y1 = (int) Math.floor(topRightCorner.y);
+        int x0 = (int) Math.floor(bottomLeftCorner.x - SPRITE_CULL_WIDTH);
+        int x1 = (int) Math.floor(topRightCorner.x + SPRITE_CULL_WIDTH) + 1;
+        int y0 = (int) Math.floor(bottomLeftCorner.y - SPRITE_CULL_HEIGHT);
+        int y1 = (int) Math.floor(topRightCorner.y + SPRITE_CULL_HEIGHT);
 
         List<GlRenderObject> objects = new ArrayList<>();
 
@@ -75,7 +76,6 @@ public class SpriteGrid {
                 Matrix4f objectTransform = new Matrix4f(transform);
                 objectTransform.mul(new Matrix4f().translate(x, y, 0.0f));
                 objects.add(new GlRenderObject(sprite, objectTransform));
-                System.out.println("object added: " + objectTransform);
             }
         }
 

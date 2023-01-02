@@ -62,4 +62,9 @@ public class GlRenderObjectGroup {
     public Texture getTexture() {
         return texture;
     }
+
+    public void free() {
+        modelMatrices.free();
+        texCoordMatrices.free();
+    }
 }

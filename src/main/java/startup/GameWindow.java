@@ -1,6 +1,7 @@
 package startup;
 
 import game.GameEngine;
+import game.GameState;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -13,12 +14,12 @@ import render.Renderer;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class GameWindow implements AutoCloseable, GameEngine.Window, IWindow {
+public class GameWindow implements AutoCloseable, game.IWindow, render.IWindow {
     private static String WINDOW_NAME = "Cool Platformer Game";
 
     private long window;
 
-//    private GameState gameState;
+    private GameState gameState;
     private Renderer renderer;
     private GameEngine gameEngine;
 //    private SoundManager soundManager;
@@ -75,9 +76,9 @@ public class GameWindow implements AutoCloseable, GameEngine.Window, IWindow {
         }
         GLUtil.setupDebugMessageCallback();
 
-//        gameState = new GameState();
-        renderer = new Renderer(this);
-        gameEngine = new GameEngine(this);
+        gameState = new GameState();
+        renderer = new Renderer(this, gameState);
+        gameEngine = new GameEngine(this, gameState);
 //        soundManager = new SoundManager(gameRenderer.getGameScene().getCamera());
 //        soundManager.init();
 //
@@ -103,10 +104,6 @@ public class GameWindow implements AutoCloseable, GameEngine.Window, IWindow {
 
     public void setResized(boolean resized) {
         this.resized = resized;
-    }
-
-    public long getWindowId() {
-        return window;
     }
 
     public void run() throws Exception {
@@ -172,5 +169,10 @@ public class GameWindow implements AutoCloseable, GameEngine.Window, IWindow {
     @Override
     public void toggleFullscreen() {
         setFullscreen(!isFullscreen());
+    }
+
+    @Override
+    public long getId() {
+        return window;
     }
 }
