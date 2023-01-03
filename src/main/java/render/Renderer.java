@@ -1,20 +1,13 @@
 package render;
 
-import game.GameState;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import game.state.GameState;
 import org.lwjgl.glfw.GLFW;
-import render.camera.BasicCamera;
-import render.camera.Camera2D;
-import render.camera.CroppedFillScreenCamera;
 import render.camera.ICamera;
 import render.opengl.*;
+import render.resources.ResourceCache;
 import render.shaders.SpritesShader;
 import render.strategies.IRenderStrategy;
-import render.strategies.PixelatedStrategy;
 import render.strategies.TestStrategy;
-
-import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 

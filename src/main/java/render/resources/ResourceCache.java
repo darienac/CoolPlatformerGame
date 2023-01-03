@@ -1,8 +1,9 @@
-package render;
+package render.resources;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import render.*;
 import render.camera.BasicCamera;
 import render.camera.Camera2D;
 import render.camera.CroppedFillScreenCamera;

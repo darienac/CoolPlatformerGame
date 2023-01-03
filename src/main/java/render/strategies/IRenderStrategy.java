@@ -1,6 +1,6 @@
 package render.strategies;
 
-import game.GameState;
+import game.state.GameState;
 import render.Renderer;
 
 public interface IRenderStrategy {

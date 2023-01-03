@@ -1,9 +1,9 @@
 package render.strategies;
 
-import game.GameState;
+import game.state.GameState;
 import org.joml.Vector3f;
 import render.Renderer;
-import render.ResourceCache;
+import render.resources.ResourceCache;
 
 import java.util.Arrays;
 

@@ -1,12 +1,8 @@
 package render.strategies;
 
-import game.GameState;
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
+import game.state.GameState;
 import render.Renderer;
-import render.ResourceCache;
-
-import java.util.Arrays;
+import render.resources.ResourceCache;
 
 import static org.lwjgl.opengl.GL11.*;
 

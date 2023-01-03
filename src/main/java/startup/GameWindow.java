@@ -1,14 +1,13 @@
 package startup;
 
 import game.GameEngine;
-import game.GameState;
+import game.state.GameState;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.GLUtil;
-import render.IWindow;
 import render.Renderer;
 
 import static org.lwjgl.glfw.GLFW.*;

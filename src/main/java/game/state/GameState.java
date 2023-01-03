@@ -1,4 +1,4 @@
-package game;
+package game.state;
 
 public class GameState {
     private float cameraX = 0.0f;
