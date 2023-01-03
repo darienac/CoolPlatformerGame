@@ -1,6 +1,6 @@
 package render;
 
-import game.state.GameState;
+import state.GameState;
 import org.lwjgl.glfw.GLFW;
 import render.camera.ICamera;
 import render.opengl.*;

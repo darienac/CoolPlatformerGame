@@ -1,6 +1,6 @@
 package game;
 
-import game.state.GameState;
+import state.GameState;
 import org.lwjgl.glfw.GLFW;
 
 public class GameEngine implements Runnable {

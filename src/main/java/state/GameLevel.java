@@ -1,4 +1,4 @@
-package game.state;
+package state;
 
 public class GameLevel {
     public enum Tile {
@@ -8,6 +8,7 @@ public class GameLevel {
     }
 
     private Tile[][] tiles;
+
     public GameLevel(Tile[][] tiles) {
         this.tiles = tiles;
     }

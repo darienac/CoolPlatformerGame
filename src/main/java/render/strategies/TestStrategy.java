@@ -1,6 +1,6 @@
 package render.strategies;
 
-import game.state.GameState;
+import state.GameState;
 import org.joml.Vector3f;
 import render.Renderer;
 import render.resources.ResourceCache;

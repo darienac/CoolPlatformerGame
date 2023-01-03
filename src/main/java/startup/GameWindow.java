@@ -1,7 +1,7 @@
 package startup;
 
 import game.GameEngine;
-import game.state.GameState;
+import state.GameState;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
