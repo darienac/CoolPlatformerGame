@@ -10,6 +10,7 @@ import render.camera.CroppedFillScreenCamera;
 import render.camera.ICamera;
 import render.opengl.*;
 import render.shaders.SpritesShader;
+import state.GameLevel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,14 +37,13 @@ public class ResourceCache {
 
     private SpritesShader testShader;
     private Mesh squareMesh;
+    private TileSpriteMapping tileMapping;
+    private Texture testTexture;
     private Sprite testSprite;
     private Sprite testSprite2;
     private Sprite testSprite3;
     private Sprite testSprite4;
-    private GlRenderObject glRenderObject;
-    private GlRenderObject glRenderObject2;
-    private GlRenderObjectGroup renderGroup;
-    private SpriteGrid spriteGrid;
+    private SpriteGrid levelTiles;
 
     private BasicCamera basicCamera = new BasicCamera();
 
@@ -60,18 +60,18 @@ public class ResourceCache {
 
         createSquareMesh();
 
-        Texture testTexture = new Texture("testAtlas.png");
+        testTexture = new Texture("testAtlas.png");
         testSprite = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(0.0f, 0.0f));
         testSprite2 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(1.0f, 0.0f));
         testSprite3 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(0.0f, 1.0f));
         testSprite4 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(1.0f, 1.0f));
 
-        renderGroup = createLargeRenderGroup(1, 5_000);
+        tileMapping = new TileSpriteMapping();
+        tileMapping.addMapping(GameLevel.Tile.BRICK, testSprite4);
+        tileMapping.addMapping(GameLevel.Tile.QBLOCK, testSprite2);
+        tileMapping.addMapping(GameLevel.Tile.ROCK, testSprite3);
 
-        spriteGrid = new SpriteGrid(testTexture, 3, 3, new Matrix4f());
-        spriteGrid.setSprite(1, 1, testSprite3);
-        spriteGrid.setSprite(0, 0, testSprite2);
-        spriteGrid.setSprite(2, 2, testSprite);
+        levelTiles = null;
     }
 
     public void setupWindowRendering(IWindow window) {
@@ -88,8 +88,8 @@ public class ResourceCache {
 
         // tileScene setup
         tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
-        tileObjectGroup = getSpriteGrid().createObjectGroup(tileCamera);
-        tileScene = new RenderScene(tileCamera, Arrays.asList(tileObjectGroup), pixelatedBuffer);
+        tileObjectGroup = null;
+        tileScene = new RenderScene(tileCamera, Arrays.asList(), pixelatedBuffer);
     }
 
     private Sprite chooseRandomSprite() {
@@ -153,6 +153,14 @@ public class ResourceCache {
         this.squareMesh = squareMesh;
     }
 
+    public TileSpriteMapping getTileMapping() {
+        return tileMapping;
+    }
+
+    public Texture getTestTexture() {
+        return testTexture;
+    }
+
     public Sprite getTestSprite() {
         return testSprite;
     }
@@ -161,20 +169,16 @@ public class ResourceCache {
         this.testSprite = testSprite;
     }
 
-    public GlRenderObjectGroup getRenderGroup() {
-        return renderGroup;
-    }
-
-    public void setRenderGroup(GlRenderObjectGroup renderGroup) {
-        this.renderGroup = renderGroup;
-    }
-
     public BasicCamera getBasicCamera() {
         return basicCamera;
     }
 
-    public SpriteGrid getSpriteGrid() {
-        return spriteGrid;
+    public SpriteGrid getLevelTiles() {
+        return levelTiles;
+    }
+
+    public void setLevelTiles(SpriteGrid levelTiles) {
+        this.levelTiles = levelTiles;
     }
 
     public GlFramebuffer getScreenTarget() {

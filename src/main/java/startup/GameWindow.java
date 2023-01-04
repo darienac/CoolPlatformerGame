@@ -77,6 +77,7 @@ public class GameWindow implements AutoCloseable, game.IWindow, render.IWindow {
 
         gameState = new GameState();
         renderer = new Renderer(this, gameState);
+        gameState.addObserver(renderer);
         gameEngine = new GameEngine(this, gameState);
 //        soundManager = new SoundManager(gameRenderer.getGameScene().getCamera());
 //        soundManager.init();

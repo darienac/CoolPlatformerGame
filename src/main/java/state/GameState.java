@@ -1,16 +1,29 @@
 package state;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameState {
-    public enum GameMode {
-        LEVEL
+    public interface RenderObserver {
+        void updateLevel();
     }
 
+    public enum GameMode {
+        LEVEL,
+        LEVEL_EDITOR
+    }
+
+    private List<RenderObserver> renderObservers = new ArrayList<>();
     private GameMode mode = GameMode.LEVEL;
 
     private float cameraX = 0.0f;
     private float cameraY = 0.0f;
 
-    private GameLevel currentLevel;
+    private GameLevel currentLevel = null;
+
+    public void addObserver(RenderObserver observer) {
+        renderObservers.add(observer);
+    }
 
     public GameMode getMode() {
         return mode;
@@ -42,5 +55,8 @@ public class GameState {
 
     public void setCurrentLevel(GameLevel currentLevel) {
         this.currentLevel = currentLevel;
+        for (RenderObserver observer : renderObservers) {
+            observer.updateLevel();
+        }
     }
 }

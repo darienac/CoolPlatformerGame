@@ -1,12 +1,13 @@
 package render;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 import org.joml.Vector4f;
 import render.camera.ICamera;
 import render.opengl.GlRenderObject;
 import render.opengl.GlRenderObjectGroup;
 import render.opengl.Texture;
+import render.resources.TileSpriteMapping;
+import state.GameLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class SpriteGrid {
     private final int height;
     private final Matrix4f transform;
     private final Sprite[][] grid;
+    private GlRenderObjectGroup objectGroup;
 
     public SpriteGrid(Texture atlas, int width, int height, Matrix4f transform) {
         this.atlas = atlas;
@@ -27,6 +29,22 @@ public class SpriteGrid {
         this.height = height;
         this.transform = transform;
         this.grid = new Sprite[width][height];
+        objectGroup = null;
+    }
+
+    public SpriteGrid(Texture atlas, GameLevel level, TileSpriteMapping mapping, Matrix4f transform) {
+        this.atlas = atlas;
+        width = level.getWidth();
+        height = level.getHeight();
+        this.transform = transform;
+        grid = new Sprite[width][height];
+        objectGroup = null;
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                grid[x][y] = mapping.getSprite(level.getTiles()[x][y]);
+            }
+        }
     }
 
     public void setSprite(int x, int y, Sprite sprite) {
@@ -38,6 +56,9 @@ public class SpriteGrid {
     }
 
     public GlRenderObjectGroup createObjectGroup(ICamera view) {
+        if (objectGroup != null) {
+            freeObjectGroup();
+        }
         Matrix4f normalizeMatrix = new Matrix4f();
         transform.invert(normalizeMatrix);
         normalizeMatrix.mul(view.getViewProjectionMatrix().invert());
@@ -79,6 +100,15 @@ public class SpriteGrid {
             }
         }
 
-        return new GlRenderObjectGroup(objects, atlas, objects.size());
+        objectGroup = new GlRenderObjectGroup(objects, atlas, objects.size());
+        return objectGroup;
+    }
+
+    public GlRenderObjectGroup getObjectGroup() {
+        return objectGroup;
+    }
+
+    public void freeObjectGroup() {
+        objectGroup.free();
     }
 }

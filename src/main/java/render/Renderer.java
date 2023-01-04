@@ -1,5 +1,6 @@
 package render;
 
+import org.joml.Matrix4f;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
 import render.camera.ICamera;
@@ -7,11 +8,11 @@ import render.opengl.*;
 import render.resources.ResourceCache;
 import render.shaders.SpritesShader;
 import render.strategies.IRenderStrategy;
-import render.strategies.TestStrategy;
+import render.strategies.LevelStrategy;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class Renderer {
+public class Renderer implements GameState.RenderObserver {
     private IWindow window;
     private GameState state;
     private ResourceCache res;
@@ -36,7 +37,7 @@ public class Renderer {
 
         res.setupWindowRendering(window);
 
-        renderStrategy = new TestStrategy();
+        renderStrategy = new LevelStrategy();
 
         lastFramerateCheck = GLFW.glfwGetTime();
         framesPerSecond = 0;
@@ -78,5 +79,15 @@ public class Renderer {
         for (GlRenderObjectGroup objectGroup : scene.getRenderGroups()) {
             renderObjectGroup(objectGroup, scene.getCamera());
         }
+    }
+
+    @Override
+    public void updateLevel() {
+        // TODO: implement this, update ResourceCache SpriteGrid levelTiles using State level data, make TestStrategy named LevelStrategy and have it use levelTiles
+        if (res.getLevelTiles() != null) {
+            res.getLevelTiles().freeObjectGroup();
+        }
+        res.setLevelTiles(new SpriteGrid(res.getTestTexture(), state.getCurrentLevel(), res.getTileMapping(), (new Matrix4f())));
+        res.getLevelTiles().createObjectGroup(res.getTileCamera());
     }
 }

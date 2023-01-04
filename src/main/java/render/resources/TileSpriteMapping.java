@@ -1,0 +1,24 @@
+package render.resources;
+
+import render.Sprite;
+import state.GameLevel;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class TileSpriteMapping {
+    private Map<GameLevel.Tile, Sprite> tileSpriteMap;
+
+    public TileSpriteMapping() {
+        tileSpriteMap = new HashMap<>();
+    }
+
+    public Sprite getSprite(GameLevel.Tile tile) {
+        System.out.println(tile + " indexed");
+        return tileSpriteMap.get(tile);
+    }
+
+    public void addMapping(GameLevel.Tile tile, Sprite sprite) {
+        tileSpriteMap.put(tile, sprite);
+    }
+}

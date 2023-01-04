@@ -1,5 +1,6 @@
 package game;
 
+import state.GameLevel;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
 
@@ -14,6 +15,9 @@ public class GameEngine implements Runnable {
         this.window = window;
         this.state = state;
         controls = new KeyboardControls(window);
+
+        state.setMode(GameState.GameMode.LEVEL_EDITOR);
+        state.setCurrentLevel(new GameLevel(new GameLevel.Tile[][] {{GameLevel.Tile.BRICK, GameLevel.Tile.QBLOCK}, {GameLevel.Tile.ROCK, GameLevel.Tile.ROCK}}, 2, 2));
     }
 
     @Override
