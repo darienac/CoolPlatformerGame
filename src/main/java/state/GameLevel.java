@@ -2,9 +2,11 @@ package state;
 
 public class GameLevel {
     public enum Tile {
-        BRICK,
+        HIT_BLOCK,
         QBLOCK,
-        ROCK
+        ROCK,
+        ROCK_GRASS,
+        DIRT_ROCK
     }
 
     private Tile[][] tiles;

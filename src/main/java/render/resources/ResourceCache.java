@@ -1,6 +1,5 @@
 package render.resources;
 
-import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import render.*;
@@ -12,9 +11,7 @@ import render.opengl.*;
 import render.shaders.SpritesShader;
 import state.GameLevel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ResourceCache {
     private static final int GAME_WIDTH = 432;
@@ -77,9 +74,11 @@ public class ResourceCache {
         tileScene = new RenderScene(tileCamera, Arrays.asList(), pixelatedBuffer);
 
         levelRenderSettings = new SpriteGridSettings(Arrays.asList(
-                new SpriteGridSettings.SpriteTemplate("hitBlock.png", GameLevel.Tile.BRICK),
+                new SpriteGridSettings.SpriteTemplate("hitBlock.png", GameLevel.Tile.HIT_BLOCK),
                 new SpriteGridSettings.SpriteTemplate("qblock.png", GameLevel.Tile.QBLOCK),
-                new SpriteGridSettings.SpriteTemplate("rock.png", GameLevel.Tile.ROCK)
+                new SpriteGridSettings.SpriteTemplate("rock.png", GameLevel.Tile.ROCK),
+                new SpriteGridSettings.SpriteTemplate("rockgrass.png", GameLevel.Tile.ROCK_GRASS),
+                new SpriteGridSettings.SpriteTemplate("testTile.png", GameLevel.Tile.DIRT_ROCK)
         ), renderer, new Matrix4f());
     }
 
@@ -108,20 +107,8 @@ public class ResourceCache {
         return testShader;
     }
 
-    public void setTestShader(SpritesShader testShader) {
-        this.testShader = testShader;
-    }
-
     public Mesh getSquareMesh() {
         return squareMesh;
-    }
-
-    public void setSquareMesh(Mesh squareMesh) {
-        this.squareMesh = squareMesh;
-    }
-
-    public BasicCamera getBasicCamera() {
-        return basicCamera;
     }
 
     public SpriteGrid getLevelTiles() {
@@ -134,10 +121,6 @@ public class ResourceCache {
 
     public SpriteGridSettings getLevelRenderSettings() {
         return levelRenderSettings;
-    }
-
-    public GlFramebuffer getScreenTarget() {
-        return screenTarget;
     }
 
     public GlFramebuffer getPixelatedBuffer() {

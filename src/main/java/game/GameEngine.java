@@ -17,7 +17,7 @@ public class GameEngine implements Runnable {
         controls = new KeyboardControls(window);
 
         state.setMode(GameState.GameMode.LEVEL_EDITOR);
-        state.setCurrentLevel(new GameLevel(new GameLevel.Tile[][] {{GameLevel.Tile.BRICK, GameLevel.Tile.QBLOCK}, {GameLevel.Tile.ROCK, GameLevel.Tile.ROCK}}, 2, 2));
+        state.setCurrentLevel(new GameLevel(new GameLevel.Tile[][] {{GameLevel.Tile.HIT_BLOCK, GameLevel.Tile.QBLOCK}, {GameLevel.Tile.ROCK, GameLevel.Tile.ROCK_GRASS}}, 2, 2));
     }
 
     @Override
