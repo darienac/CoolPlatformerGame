@@ -1,5 +1,10 @@
 package render.opengl;
 
+import org.joml.Matrix3x2f;
+import render.Renderer;
+import render.Sprite;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -7,18 +12,46 @@ import static org.lwjgl.opengl.GL20.*;
 public class GlRenderObjectGroup {
     private final int maxSize;
     private final Texture texture;
-    private final GlBuffer modelMatrices;
-    private final GlBuffer texCoordMatrices;
-    private final float[] modelMatricesArray;
-    private final float[] texCoordMatricesArray;
+    private GlBuffer modelMatrices;
+    private GlBuffer texCoordMatrices;
+    private float[] modelMatricesArray;
+    private float[] texCoordMatricesArray;
 
     private List<GlRenderObject> glRenderObjects;
+
+    public GlRenderObjectGroup(List<GlRenderObject> glRenderObjects, Renderer renderer, int maxSize) {
+        List<Texture> textures = new ArrayList<>();
+        for (GlRenderObject renderObject : glRenderObjects) {
+            textures.add(renderObject.getSprite().getTexture());
+        }
+
+        TextureAtlas atlas = new TextureAtlas(textures, renderer);
+        texture = atlas;
+        List<Matrix3x2f> texCoordTransforms = atlas.getTexCoordTransforms();
+
+        for (int i = 0; i < texCoordTransforms.size(); i++) {
+            Sprite sprite = glRenderObjects.get(i).getSprite();
+            sprite.setTexture(texture);
+            Matrix3x2f texCoordTransform = new Matrix3x2f();
+            texCoordTransforms.get(i).mul(sprite.getTexCoordTransform(), texCoordTransform);
+            sprite.setTexCoordTransform(texCoordTransform);
+        }
+
+        this.glRenderObjects = glRenderObjects;
+        this.maxSize = maxSize;
+
+        initBuffers(maxSize);
+    }
 
     public GlRenderObjectGroup(List<GlRenderObject> glRenderObjects, Texture texture, int maxSize) {
         this.glRenderObjects = glRenderObjects;
         this.maxSize = maxSize;
         this.texture = texture;
 
+        initBuffers(maxSize);
+    }
+
+    private void initBuffers(int maxSize) {
         modelMatricesArray = new float[maxSize * 16];
         texCoordMatricesArray = new float[maxSize * 6];
 

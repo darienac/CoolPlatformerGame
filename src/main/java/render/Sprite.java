@@ -15,7 +15,6 @@ public class Sprite {
     public Sprite(Texture texture, Matrix3x2f texCoordTransform) {
         this.texture = texture;
         this.texCoordTransform = texCoordTransform;
-
     }
 
     public Texture getTexture() {

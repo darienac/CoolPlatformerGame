@@ -61,4 +61,11 @@ public class GlFramebuffer {
     public int getHeight() {
         return height;
     }
+
+    public void free() {
+        glDeleteFramebuffers(framebufferId);
+        if (useDepthBuffer) {
+            glDeleteRenderbuffers(depthBufferId);
+        }
+    }
 }

@@ -83,7 +83,6 @@ public class Renderer implements GameState.RenderObserver {
 
     @Override
     public void updateLevel() {
-        // TODO: implement this, update ResourceCache SpriteGrid levelTiles using State level data, make TestStrategy named LevelStrategy and have it use levelTiles
         if (res.getLevelTiles() != null) {
             res.getLevelTiles().freeObjectGroup();
         }
