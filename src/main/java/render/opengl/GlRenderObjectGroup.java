@@ -11,37 +11,13 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class GlRenderObjectGroup {
     private final int maxSize;
-    private final Texture texture;
+    private Texture texture;
     private GlBuffer modelMatrices;
     private GlBuffer texCoordMatrices;
     private float[] modelMatricesArray;
     private float[] texCoordMatricesArray;
 
     private List<GlRenderObject> glRenderObjects;
-
-    public GlRenderObjectGroup(List<GlRenderObject> glRenderObjects, Renderer renderer, int maxSize) {
-        List<Texture> textures = new ArrayList<>();
-        for (GlRenderObject renderObject : glRenderObjects) {
-            textures.add(renderObject.getSprite().getTexture());
-        }
-
-        TextureAtlas atlas = new TextureAtlas(textures, renderer);
-        texture = atlas;
-        List<Matrix3x2f> texCoordTransforms = atlas.getTexCoordTransforms();
-
-        for (int i = 0; i < texCoordTransforms.size(); i++) {
-            Sprite sprite = glRenderObjects.get(i).getSprite();
-            sprite.setTexture(texture);
-            Matrix3x2f texCoordTransform = new Matrix3x2f();
-            texCoordTransforms.get(i).mul(sprite.getTexCoordTransform(), texCoordTransform);
-            sprite.setTexCoordTransform(texCoordTransform);
-        }
-
-        this.glRenderObjects = glRenderObjects;
-        this.maxSize = maxSize;
-
-        initBuffers(maxSize);
-    }
 
     public GlRenderObjectGroup(List<GlRenderObject> glRenderObjects, Texture texture, int maxSize) {
         this.glRenderObjects = glRenderObjects;
@@ -94,6 +70,10 @@ public class GlRenderObjectGroup {
 
     public Texture getTexture() {
         return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 
     public void free() {

@@ -16,7 +16,7 @@ public class Texture implements AutoCloseable {
     private final int width;
     private final int height;
 
-    public Texture(String fileName) throws Exception {
+    public Texture(String fileName) {
         try (MemoryStack stack = stackPush()) {
             stbi_set_flip_vertically_on_load(true);
 
@@ -72,7 +72,7 @@ public class Texture implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         glDeleteTextures(textureId);
     }
 }

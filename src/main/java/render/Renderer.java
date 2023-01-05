@@ -35,7 +35,7 @@ public class Renderer implements GameState.RenderObserver {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_CULL_FACE);
 
-        res.setupWindowRendering(window);
+        res.setupWindowRendering(this);
 
         renderStrategy = new LevelStrategy();
 
@@ -86,7 +86,11 @@ public class Renderer implements GameState.RenderObserver {
         if (res.getLevelTiles() != null) {
             res.getLevelTiles().freeObjectGroup();
         }
-        res.setLevelTiles(new SpriteGrid(res.getTestTexture(), state.getCurrentLevel(), res.getTileMapping(), (new Matrix4f())));
+        res.setLevelTiles(new SpriteGrid(state.getCurrentLevel(), res.getLevelRenderSettings()));
         res.getLevelTiles().createObjectGroup(res.getTileCamera());
+    }
+
+    public IWindow getWindow() {
+        return window;
     }
 }

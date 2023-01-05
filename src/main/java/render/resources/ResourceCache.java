@@ -37,13 +37,8 @@ public class ResourceCache {
 
     private SpritesShader testShader;
     private Mesh squareMesh;
-    private TileSpriteMapping tileMapping;
-    private Texture testTexture;
-    private Sprite testSprite;
-    private Sprite testSprite2;
-    private Sprite testSprite3;
-    private Sprite testSprite4;
     private SpriteGrid levelTiles;
+    private SpriteGridSettings levelRenderSettings;
 
     private BasicCamera basicCamera = new BasicCamera();
 
@@ -55,26 +50,16 @@ public class ResourceCache {
     private GlRenderObjectGroup tileObjectGroup;
 
     private ResourceCache() throws Exception {
-        // Testing
         testShader = new SpritesShader("testShader_v.glsl", "testShader_f.glsl");
 
         createSquareMesh();
 
-        testTexture = new Texture("testAtlas.png");
-        testSprite = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(0.0f, 0.0f));
-        testSprite2 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(1.0f, 0.0f));
-        testSprite3 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(0.0f, 1.0f));
-        testSprite4 = new Sprite(testTexture, new Matrix3x2f().scale(0.5f).translate(1.0f, 1.0f));
-
-        tileMapping = new TileSpriteMapping();
-        tileMapping.addMapping(GameLevel.Tile.BRICK, testSprite4);
-        tileMapping.addMapping(GameLevel.Tile.QBLOCK, testSprite2);
-        tileMapping.addMapping(GameLevel.Tile.ROCK, testSprite3);
-
         levelTiles = null;
     }
 
-    public void setupWindowRendering(IWindow window) {
+    public void setupWindowRendering(Renderer renderer) {
+        IWindow window = renderer.getWindow();
+
         // Screen Framebuffer (id: 0)
         screenTarget = new GlScreenBuffer(window);
 
@@ -90,30 +75,12 @@ public class ResourceCache {
         tileCamera = new Camera2D(new Vector3f(0.0f, 0.0f, 0.0f), (float) GAME_WIDTH / TILE_RESOLUTION, (float) GAME_HEIGHT / TILE_RESOLUTION);
         tileObjectGroup = null;
         tileScene = new RenderScene(tileCamera, Arrays.asList(), pixelatedBuffer);
-    }
 
-    private Sprite chooseRandomSprite() {
-        switch ((int) Math.floor(Math.random() * 4.0)) {
-            case 0:
-                return testSprite;
-            case 1:
-                return testSprite2;
-            case 2:
-                return testSprite3;
-            case 3:
-                return testSprite4;
-        }
-
-        return testSprite;
-    }
-
-    private GlRenderObjectGroup createLargeRenderGroup(int tileWidth, int numTiles) {
-        List<GlRenderObject> glRenderObjects = new ArrayList<>();
-        for (int i = 0; i < numTiles; i++) {
-            glRenderObjects.add(new GlRenderObject(chooseRandomSprite(), new Matrix4f().translate((float) Math.random() * 2.0f - 1.0f, (float) Math.random() * 2.0f - 1.0f, 0.0f).scale((float) 1.0 / tileWidth)));
-        }
-
-        return new GlRenderObjectGroup(glRenderObjects, testSprite.getTexture(), numTiles);
+        levelRenderSettings = new SpriteGridSettings(Arrays.asList(
+                new SpriteGridSettings.SpriteTemplate("hitBlock.png", GameLevel.Tile.BRICK),
+                new SpriteGridSettings.SpriteTemplate("qblock.png", GameLevel.Tile.QBLOCK),
+                new SpriteGridSettings.SpriteTemplate("rock.png", GameLevel.Tile.ROCK)
+        ), renderer, new Matrix4f());
     }
 
     private void createSquareMesh() {
@@ -153,22 +120,6 @@ public class ResourceCache {
         this.squareMesh = squareMesh;
     }
 
-    public TileSpriteMapping getTileMapping() {
-        return tileMapping;
-    }
-
-    public Texture getTestTexture() {
-        return testTexture;
-    }
-
-    public Sprite getTestSprite() {
-        return testSprite;
-    }
-
-    public void setTestSprite(Sprite testSprite) {
-        this.testSprite = testSprite;
-    }
-
     public BasicCamera getBasicCamera() {
         return basicCamera;
     }
@@ -179,6 +130,10 @@ public class ResourceCache {
 
     public void setLevelTiles(SpriteGrid levelTiles) {
         this.levelTiles = levelTiles;
+    }
+
+    public SpriteGridSettings getLevelRenderSettings() {
+        return levelRenderSettings;
     }
 
     public GlFramebuffer getScreenTarget() {

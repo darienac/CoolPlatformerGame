@@ -35,6 +35,8 @@ public class TextureAtlas extends Texture {
 
     public TextureAtlas(List<Texture> textures, Renderer renderer, int width, int height) {
         super(width, height);
+        System.out.println("width: " + width + ", height: " + height);
+
         GlFramebuffer framebuffer = new GlFramebuffer(Arrays.asList(this), false);
 
         Sprite sprite = new Sprite(null, new Matrix3x2f());
@@ -43,15 +45,21 @@ public class TextureAtlas extends Texture {
         RenderScene scene = new RenderScene(new Camera2D(new Vector3f(0.5f, 0.5f, 0.0f), 1.0f, 1.0f), Arrays.asList(objectGroup), framebuffer);
 
         TextureChunk chunk = new TextureChunk(0, 0, width, height);
+        texCoordTransforms = new ArrayList<>();
         for (Texture texture : textures) {
             TextureChunk chunkSpace = chunk.allocateSpace(texture.getWidth(), texture.getHeight());
+            System.out.println(chunkSpace);
             if (chunkSpace == null) {
                 throw new RuntimeException("Unable to allocate space for texture in atlas");
             }
 
+            texCoordTransforms.add(getTexCoordTransform(chunkSpace));
+
             sprite.setTexture(texture);
+
             renderObject.setTransform(getSpriteTransform(chunkSpace));
             objectGroup.updateArrays();
+            objectGroup.setTexture(texture);
             renderer.renderScene(scene);
         }
 
@@ -60,15 +68,25 @@ public class TextureAtlas extends Texture {
     }
 
     private Matrix4f getSpriteTransform(TextureChunk chunk) {
-        return new Matrix4f().translate(-0.5f, -0.5f, 0.0f).scale((float) chunk.getWidth() / getWidth(), (float) chunk.getHeight() / getHeight(), 1.0f).translate((float) chunk.getX() / getWidth(), (float) chunk.getY() / getHeight(), 0.0f);
+        return new Matrix4f().translate((float) chunk.getX() / getWidth(), (float) chunk.getY() / getHeight(), 0.0f).scale((float) chunk.getWidth() / getWidth(), (float) chunk.getHeight() / getHeight(), 1.0f).translate(0.5f, 0.5f, 0.0f);
     }
 
     private Matrix3x2f getTexCoordTransform(TextureChunk chunk) {
-        return new Matrix3x2f().scale((float) chunk.getWidth() / getWidth(), (float) chunk.getHeight() / getHeight()).translate((float) chunk.getX() / getWidth(), (float) chunk.getY() / getHeight());
+        return new Matrix3x2f().translate((float) chunk.getX() / getWidth(), (float) chunk.getY() / getHeight()).scale((float) chunk.getWidth() / getWidth(), (float) chunk.getHeight() / getHeight());
     }
 
     public List<Matrix3x2f> getTexCoordTransforms() {
         return texCoordTransforms;
+    }
+
+    public void remapSprites(List<Sprite> sprites) {
+        for (int i = 0; i < texCoordTransforms.size(); i++) {
+            Sprite sprite = sprites.get(i);
+            sprite.setTexture(this);
+            Matrix3x2f texCoordTransform = new Matrix3x2f();
+            texCoordTransforms.get(i).mul(sprite.getTexCoordTransform(), texCoordTransform);
+            sprite.setTexCoordTransform(texCoordTransform);
+        }
     }
 
     private static class TextureChunk {
@@ -127,6 +145,16 @@ public class TextureAtlas extends Texture {
 
         public int getHeight() {
             return height;
+        }
+
+        @Override
+        public String toString() {
+            return "TextureChunk{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    ", width=" + width +
+                    ", height=" + height +
+                    '}';
         }
     }
 }

@@ -6,6 +6,7 @@ import render.camera.ICamera;
 import render.opengl.GlRenderObject;
 import render.opengl.GlRenderObjectGroup;
 import render.opengl.Texture;
+import render.resources.SpriteGridSettings;
 import render.resources.TileSpriteMapping;
 import state.GameLevel;
 
@@ -22,6 +23,10 @@ public class SpriteGrid {
     private final Matrix4f transform;
     private final Sprite[][] grid;
     private GlRenderObjectGroup objectGroup;
+
+    public SpriteGrid(GameLevel level, SpriteGridSettings settings) {
+        this(settings.getAtlas(), level, settings.getTileMapping(), settings.getTransform());
+    }
 
     public SpriteGrid(Texture atlas, int width, int height, Matrix4f transform) {
         this.atlas = atlas;
