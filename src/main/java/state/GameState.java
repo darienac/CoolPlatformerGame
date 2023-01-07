@@ -1,5 +1,6 @@
 package state;
 
+import org.joml.Vector2f;
 import org.joml.Vector2i;
 
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ public class GameState {
 
     private List<RenderObserver> renderObservers = new ArrayList<>();
     private GameMode mode = GameMode.LEVEL;
-
-    private float cameraX = 0.0f;
-    private float cameraY = 0.0f;
+    private Vector2f cameraPos = new Vector2f();
 
     // Level
     private GameLevel currentLevel = null;
@@ -39,20 +38,12 @@ public class GameState {
         this.mode = mode;
     }
 
-    public float getCameraX() {
-        return cameraX;
+    public Vector2f getCameraPos() {
+        return cameraPos;
     }
 
-    public void setCameraX(float cameraX) {
-        this.cameraX = cameraX;
-    }
-
-    public float getCameraY() {
-        return cameraY;
-    }
-
-    public void setCameraY(float cameraY) {
-        this.cameraY = cameraY;
+    public void setCameraPos(Vector2f cameraPos) {
+        this.cameraPos = cameraPos;
     }
 
     public GameLevel getCurrentLevel() {

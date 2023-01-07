@@ -1,8 +1,10 @@
 package game;
 
+import org.joml.Vector2f;
+import org.joml.Vector2i;
+
 public interface IControls {
-    boolean isCameraMoveLeft();
-    boolean isCameraMoveRight();
-    boolean isCameraMoveUp();
-    boolean isCameraMoveDown();
+    Vector2f getCameraMove();
+    Vector2i getEditorSelectorMove();
+    void resetEditorSelectorMove();
 }

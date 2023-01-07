@@ -1,5 +1,6 @@
 package game;
 
+import org.joml.Vector2f;
 import state.GameLevel;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
@@ -42,18 +43,12 @@ public class GameEngine implements Runnable {
         double time = GLFW.glfwGetTime();
         double timeDelta = time - lastTime;
 
-        if (controls.isCameraMoveLeft()) {
-            state.setCameraX(state.getCameraX() - 8.0f * (float) timeDelta);
-        }
-        if (controls.isCameraMoveRight()) {
-            state.setCameraX(state.getCameraX() + 8.0f * (float) timeDelta);
-        }
-        if (controls.isCameraMoveUp()) {
-            state.setCameraY(state.getCameraY() + 8.0f * (float) timeDelta);
-        }
-        if (controls.isCameraMoveDown()) {
-            state.setCameraY(state.getCameraY() - 8.0f * (float) timeDelta);
-        }
+        Vector2f cameraMove = new Vector2f();
+        controls.getCameraMove().mul((float) (8.0 * timeDelta), cameraMove);
+        state.getCameraPos().add(cameraMove);
+
+        state.getEditorSelectorPos().add(controls.getEditorSelectorMove());
+        controls.resetEditorSelectorMove();
 
         return time;
     }

@@ -15,7 +15,7 @@ public class LevelStrategy extends PixelatedStrategy {
     protected void renderPixelated(GameState state, Renderer renderer) {
         ResourceCache res = ResourceCache.getInstance();
 
-        res.getTileCamera().setPosition(new Vector3f(state.getCameraX(), state.getCameraY(), 0.0f));
+        res.getTileCamera().setPosition(new Vector3f(state.getCameraPos(), 0.0f));
         if (res.getTileObjectGroup() != null) {
             res.getTileObjectGroup().free();
         }
