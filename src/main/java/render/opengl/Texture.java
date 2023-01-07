@@ -29,6 +29,9 @@ public class Texture implements AutoCloseable {
             height = h.get(0);
 
             textureId = glGenTextures();
+            if (textureId < 0) {
+                throw new RuntimeException("Unable to create texture");
+            }
 
             bind();
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -47,6 +50,9 @@ public class Texture implements AutoCloseable {
         this.height = height;
 
         textureId = glGenTextures();
+        if (textureId < 0) {
+            throw new RuntimeException("Unable to create texture");
+        }
 
         bind();
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);

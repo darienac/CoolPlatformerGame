@@ -46,12 +46,16 @@ public class ResourceCache {
     private Camera2D tileCamera;
     private GlRenderObjectGroup tileObjectGroup;
 
+    private final GlRenderObjectSingleGroup levelEditorSelector;
+
     private ResourceCache() throws Exception {
         testShader = new SpritesShader("testShader_v.glsl", "testShader_f.glsl");
 
         createSquareMesh();
 
         levelTiles = null;
+
+        levelEditorSelector = new GlRenderObjectSingleGroup("selector.png");
     }
 
     public void setupWindowRendering(Renderer renderer) {
@@ -145,5 +149,9 @@ public class ResourceCache {
 
     public void setTileObjectGroup(GlRenderObjectGroup tileObjectGroup) {
         this.tileObjectGroup = tileObjectGroup;
+    }
+
+    public GlRenderObjectSingleGroup getLevelEditorSelector() {
+        return levelEditorSelector;
     }
 }

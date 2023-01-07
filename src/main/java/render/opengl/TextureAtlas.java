@@ -41,7 +41,7 @@ public class TextureAtlas extends Texture {
 
         Sprite sprite = new Sprite(null, new Matrix3x2f());
         GlRenderObject renderObject = new GlRenderObject(sprite, new Matrix4f());
-        GlRenderObjectGroup objectGroup = new GlRenderObjectGroup(Arrays.asList(renderObject), (Texture) null, 1);
+        GlRenderObjectSingleGroup objectGroup = new GlRenderObjectSingleGroup(renderObject);
         RenderScene scene = new RenderScene(new Camera2D(new Vector3f(0.5f, 0.5f, 0.0f), 1.0f, 1.0f), Arrays.asList(objectGroup), framebuffer);
 
         TextureChunk chunk = new TextureChunk(0, 0, width, height);
@@ -55,11 +55,9 @@ public class TextureAtlas extends Texture {
 
             texCoordTransforms.add(getTexCoordTransform(chunkSpace));
 
-            sprite.setTexture(texture);
-
-            renderObject.setTransform(getSpriteTransform(chunkSpace));
-            objectGroup.updateArrays();
             objectGroup.setTexture(texture);
+
+            objectGroup.setTransform(getSpriteTransform(chunkSpace));
             renderer.renderScene(scene);
         }
 

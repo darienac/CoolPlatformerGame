@@ -1,5 +1,7 @@
 package state;
 
+import org.joml.Vector2i;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,11 @@ public class GameState {
     private float cameraX = 0.0f;
     private float cameraY = 0.0f;
 
+    // Level
     private GameLevel currentLevel = null;
+
+    // Level Editor
+    private Vector2i editorSelectorPos = new Vector2i(0, 0);
 
     public void addObserver(RenderObserver observer) {
         renderObservers.add(observer);
@@ -58,5 +64,13 @@ public class GameState {
         for (RenderObserver observer : renderObservers) {
             observer.updateLevel();
         }
+    }
+
+    public Vector2i getEditorSelectorPos() {
+        return editorSelectorPos;
+    }
+
+    public void setEditorSelectorPos(Vector2i editorSelectorPos) {
+        this.editorSelectorPos = editorSelectorPos;
     }
 }

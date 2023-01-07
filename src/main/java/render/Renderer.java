@@ -1,6 +1,7 @@
 package render;
 
 import org.joml.Matrix4f;
+import render.strategies.LevelEditorStrategy;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
 import render.camera.ICamera;
@@ -37,7 +38,7 @@ public class Renderer implements GameState.RenderObserver {
 
         res.setupWindowRendering(this);
 
-        renderStrategy = new LevelStrategy();
+        renderStrategy = new LevelEditorStrategy();
 
         lastFramerateCheck = GLFW.glfwGetTime();
         framesPerSecond = 0;

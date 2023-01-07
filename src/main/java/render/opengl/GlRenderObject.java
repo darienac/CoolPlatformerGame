@@ -7,6 +7,10 @@ public class GlRenderObject {
     private Sprite sprite;
     private Matrix4f transform;
 
+    public GlRenderObject(Sprite sprite) {
+        this(sprite, new Matrix4f());
+    }
+
     public GlRenderObject(Sprite sprite, Matrix4f transform) {
         this.sprite = sprite;
         this.transform = transform;

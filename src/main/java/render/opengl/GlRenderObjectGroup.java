@@ -76,6 +76,10 @@ public class GlRenderObjectGroup {
         this.texture = texture;
     }
 
+    public int getMaxSize() {
+        return maxSize;
+    }
+
     public void free() {
         modelMatrices.free();
         texCoordMatrices.free();

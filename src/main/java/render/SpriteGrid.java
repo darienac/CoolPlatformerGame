@@ -99,9 +99,7 @@ public class SpriteGrid {
                     continue;
                 }
 
-                Matrix4f objectTransform = new Matrix4f(transform);
-                objectTransform.mul(new Matrix4f().translate(x, y, 0.0f));
-                objects.add(new GlRenderObject(sprite, objectTransform));
+                objects.add(new GlRenderObject(sprite, getGridPosTransform(x, y)));
             }
         }
 
@@ -111,6 +109,12 @@ public class SpriteGrid {
 
     public GlRenderObjectGroup getObjectGroup() {
         return objectGroup;
+    }
+
+    public Matrix4f getGridPosTransform(int x, int y) {
+        Matrix4f objectTransform = new Matrix4f(transform);
+        objectTransform.mul(new Matrix4f().translate(x, y, 0.0f));
+        return objectTransform;
     }
 
     public void freeObjectGroup() {
