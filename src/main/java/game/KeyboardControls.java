@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class KeyboardControls implements IControls {
     private final Vector2f cameraMove = new Vector2f();
     private final Vector2i editorSelectorMove = new Vector2i();
+    private int editorSelectedTileMove = 0;
 
     private Input4Dir cameraMoveInput = new Input4Dir();
     private Input4Dir editorSelectorMoveInput = new Input4Dir();
@@ -52,6 +53,16 @@ public class KeyboardControls implements IControls {
                 break;
             case GLFW_KEY_S:
                 editorSelectorMoveInput.down(value);
+                break;
+            case GLFW_KEY_Z:
+                if (value) {
+                    editorSelectedTileMove = -1;
+                }
+                break;
+            case GLFW_KEY_X:
+                if (value) {
+                    editorSelectedTileMove = 1;
+                }
                 break;
         }
 
@@ -101,6 +112,16 @@ public class KeyboardControls implements IControls {
     public void resetEditorSelectorMove() {
         editorSelectorMove.zero();
         editorSelectorMoveInput.reset();
+    }
+
+    @Override
+    public int getEditorSelectedTileMove() {
+        return editorSelectedTileMove;
+    }
+
+    @Override
+    public void resetEditorSelectedTileMove() {
+        editorSelectedTileMove = 0;
     }
 
     private static class Input4Dir {

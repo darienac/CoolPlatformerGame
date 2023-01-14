@@ -1,6 +1,5 @@
 package render;
 
-import org.joml.Matrix4f;
 import render.strategies.LevelEditorStrategy;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
@@ -9,7 +8,6 @@ import render.opengl.*;
 import render.resources.ResourceCache;
 import render.shaders.SpritesShader;
 import render.strategies.IRenderStrategy;
-import render.strategies.LevelStrategy;
 
 import static org.lwjgl.opengl.GL33.*;
 
@@ -63,7 +61,7 @@ public class Renderer implements GameState.RenderObserver {
     public void renderObjectGroup(GlRenderObjectGroup objectGroup, ICamera camera) {
         objectGroup.update();
 
-        SpritesShader shader = res.getTestShader();
+        SpritesShader shader = res.getLevelShader();
         shader.bind();
         shader.bindMesh(res.getSquareMesh());
         shader.bindMatrices(camera.getViewProjectionMatrix());

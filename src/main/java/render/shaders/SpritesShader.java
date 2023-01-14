@@ -14,7 +14,7 @@ public class SpritesShader extends ShaderProgram {
     private int aTexCoord;
     private int aModelMatrix;
     private int aTexCoordMatrix;
-    private float[] uViewProjectionMatrixBuffer = new float[16];
+    private final float[] uViewProjectionMatrixBuffer = new float[16];
 
     public SpritesShader() throws Exception {
         super();

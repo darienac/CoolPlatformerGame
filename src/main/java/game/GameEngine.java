@@ -50,6 +50,15 @@ public class GameEngine implements Runnable {
         state.getEditorSelectorPos().add(controls.getEditorSelectorMove());
         controls.resetEditorSelectorMove();
 
+        if (controls.getEditorSelectedTileMove() > 0) {
+            state.nextEditorSelectedTile();
+        } else if (controls.getEditorSelectedTileMove() < 0) {
+            state.previousEditorSelectedTile();
+        }
+        controls.resetEditorSelectedTileMove();
+
         return time;
+
+        // TODO: make behavior based on current state (maybe use strategies here too?)
     }
 }

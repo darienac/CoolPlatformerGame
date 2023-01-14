@@ -32,7 +32,7 @@ public class ResourceCache {
         return instance;
     }
 
-    private SpritesShader testShader;
+    private SpritesShader levelShader;
     private Mesh squareMesh;
     private SpriteGrid levelTiles;
     private SpriteGridSettings levelRenderSettings;
@@ -49,7 +49,7 @@ public class ResourceCache {
     private final GlRenderObjectSingleGroup levelEditorSelector;
 
     private ResourceCache() throws Exception {
-        testShader = new SpritesShader("testShader_v.glsl", "testShader_f.glsl");
+        levelShader = new SpritesShader("levelShader_v.glsl", "levelShader_f.glsl");
 
         createSquareMesh();
 
@@ -107,8 +107,8 @@ public class ResourceCache {
         squareMesh.setElementCount(12);
     }
 
-    public SpritesShader getTestShader() {
-        return testShader;
+    public SpritesShader getLevelShader() {
+        return levelShader;
     }
 
     public Mesh getSquareMesh() {

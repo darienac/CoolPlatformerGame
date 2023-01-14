@@ -25,6 +25,7 @@ public class GameState {
 
     // Level Editor
     private Vector2i editorSelectorPos = new Vector2i(0, 0);
+    private int editorSelectedTile = 0;
 
     public void addObserver(RenderObserver observer) {
         renderObservers.add(observer);
@@ -63,5 +64,27 @@ public class GameState {
 
     public void setEditorSelectorPos(Vector2i editorSelectorPos) {
         this.editorSelectorPos = editorSelectorPos;
+    }
+
+    public GameLevel.Tile getEditorSelectedTile() {
+        return GameLevel.Tile.values()[editorSelectedTile];
+    }
+
+    public void nextEditorSelectedTile() {
+        editorSelectedTile++;
+        if (editorSelectedTile > GameLevel.Tile.values().length) {
+            editorSelectedTile = 0;
+        }
+    }
+
+    public void previousEditorSelectedTile() {
+        editorSelectedTile--;
+        if (editorSelectedTile < 0) {
+            editorSelectedTile = GameLevel.Tile.values().length - 1;
+        }
+    }
+
+    public void resetEditorSelectedTile() {
+        editorSelectedTile = 0;
     }
 }
