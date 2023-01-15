@@ -92,33 +92,14 @@ public class ShaderProgram implements AutoCloseable {
         return programId;
     }
 
-    private void setUniformFloat(String name, float value) {
-        bind();
-        glUniform1f(glGetUniformLocation(getProgramId(), name), value);
-    }
-
-    private void bindTexture(String name, int textureUnit, Texture texture) {
-        bind();
-        glUniform1i(glGetUniformLocation(getProgramId(), name), textureUnit);
-        glActiveTexture(GL_TEXTURE0 + textureUnit);
-        glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
-    }
-
     @Override
-    public void close() throws Exception {
+    public void close() {
         unbind();
         if (programId != 0) {
             glDeleteProgram(programId);
         }
     }
 
-    // Java 11+ only
-//    private String readResource(String name) throws IOException {
-//        Path filePath = Path.of(SHADER_PATH + name);
-//        return Files.readString(filePath);
-//    }
-
-    // Java 8 compatible
     private String readResource(String name) throws IOException {
         Path filePath = Paths.get(SHADER_PATH + name);
         return new String(Files.readAllBytes(filePath));

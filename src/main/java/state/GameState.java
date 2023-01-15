@@ -72,7 +72,7 @@ public class GameState {
 
     public void nextEditorSelectedTile() {
         editorSelectedTile++;
-        if (editorSelectedTile > GameLevel.Tile.values().length) {
+        if (editorSelectedTile >= GameLevel.Tile.values().length) {
             editorSelectedTile = 0;
         }
     }

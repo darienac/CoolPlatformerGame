@@ -48,4 +48,18 @@ public class GlRenderObjectSingleGroup extends GlRenderObjectGroup {
         renderObject.getSprite().setTexCoordTransform(transform);
         updateArrays();
     }
+
+    public GlRenderObject getRenderObject() {
+        return renderObject;
+    }
+
+    public Sprite getSprite() {
+        return renderObject.getSprite();
+    }
+
+    public void setSprite(Sprite sprite) {
+        renderObject.setSprite(sprite);
+        setTexture(sprite.getTexture());
+        updateArrays();
+    }
 }

@@ -16,7 +16,6 @@ public class TileSpriteMapping {
     }
 
     public Sprite getSprite(GameLevel.Tile tile) {
-        System.out.println(tile + " indexed");
         return tileSpriteMap.get(tile);
     }
 

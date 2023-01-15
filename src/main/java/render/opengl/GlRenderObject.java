@@ -7,6 +7,8 @@ public class GlRenderObject {
     private Sprite sprite;
     private Matrix4f transform;
 
+    private float opacity = 1.0f;
+
     public GlRenderObject(Sprite sprite) {
         this(sprite, new Matrix4f());
     }
@@ -30,5 +32,13 @@ public class GlRenderObject {
 
     public void setTransform(Matrix4f transform) {
         this.transform = transform;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
     }
 }

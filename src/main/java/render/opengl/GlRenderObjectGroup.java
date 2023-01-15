@@ -14,8 +14,10 @@ public class GlRenderObjectGroup {
     private Texture texture;
     private GlBuffer modelMatrices;
     private GlBuffer texCoordMatrices;
+    private GlBuffer opacities;
     private float[] modelMatricesArray;
     private float[] texCoordMatricesArray;
+    private float[] opacitiesArray;
 
     private List<GlRenderObject> glRenderObjects;
 
@@ -30,19 +32,23 @@ public class GlRenderObjectGroup {
     private void initBuffers(int maxSize) {
         modelMatricesArray = new float[maxSize * 16];
         texCoordMatricesArray = new float[maxSize * 6];
+        opacitiesArray = new float[maxSize];
 
         modelMatrices = new GlBuffer(GL_DYNAMIC_DRAW);
         texCoordMatrices = new GlBuffer(GL_DYNAMIC_DRAW);
+        opacities = new GlBuffer(GL_DYNAMIC_DRAW);
 
         updateArrays();
         modelMatrices.setData(modelMatricesArray);
         texCoordMatrices.setData(texCoordMatricesArray);
+        opacities.setData(opacitiesArray);
     }
 
     public void updateArrays(int index) {
         GlRenderObject glRenderObject = glRenderObjects.get(index);
         glRenderObject.getTransform().get(modelMatricesArray, index * 16);
         glRenderObject.getSprite().getTexCoordTransform().get(texCoordMatricesArray, index * 6);
+        opacitiesArray[index] = glRenderObject.getOpacity();
     }
 
     public void updateArrays() {
@@ -54,6 +60,7 @@ public class GlRenderObjectGroup {
     public void update() {
         modelMatrices.updateData(modelMatricesArray);
         texCoordMatrices.updateData(texCoordMatricesArray);
+        opacities.updateData(opacitiesArray);
     }
 
     public GlBuffer getModelMatrices() {
@@ -62,6 +69,10 @@ public class GlRenderObjectGroup {
 
     public GlBuffer getTexCoordMatrices() {
         return texCoordMatrices;
+    }
+
+    public GlBuffer getOpacities() {
+        return opacities;
     }
 
     public List<GlRenderObject> getRenderObjects() {
@@ -83,5 +94,6 @@ public class GlRenderObjectGroup {
     public void free() {
         modelMatrices.free();
         texCoordMatrices.free();
+        opacities.free();
     }
 }

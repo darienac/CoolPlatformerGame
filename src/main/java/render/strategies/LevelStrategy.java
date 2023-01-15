@@ -27,7 +27,6 @@ public class LevelStrategy extends PixelatedStrategy {
         res.getTileScene().setRenderGroups(renderGroups);
 
         renderTileScene(state, renderer);
-        // TODO: make sure renderer.renderScene is the last call for LevelEditor
     }
 
     protected void renderTileScene(GameState state, Renderer renderer) {
