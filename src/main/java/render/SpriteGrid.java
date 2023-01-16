@@ -118,6 +118,10 @@ public class SpriteGrid {
     }
 
     public void freeObjectGroup() {
+        if (objectGroup == null) {
+            return;
+        }
         objectGroup.free();
+        objectGroup = null;
     }
 }

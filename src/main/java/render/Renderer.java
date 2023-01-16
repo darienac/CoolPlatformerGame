@@ -21,6 +21,7 @@ public class Renderer implements GameState.RenderObserver {
     private int height = 0;
     private double lastFramerateCheck;
     private int framesPerSecond;
+    boolean updateLevel = false;
 
     public Renderer(IWindow window, GameState state) {
         this.window = window;
@@ -46,6 +47,10 @@ public class Renderer implements GameState.RenderObserver {
         if (width != window.getWidth() || height != window.getHeight()) {
             width = window.getWidth();
             height = window.getHeight();
+        }
+
+        if (updateLevel) {
+            finishUpdateLevel();
         }
 
         renderStrategy.render(state, this);
@@ -82,6 +87,15 @@ public class Renderer implements GameState.RenderObserver {
 
     @Override
     public void updateLevel() {
+        updateLevel = true;
+    }
+
+    private void finishUpdateLevel() {
+        if (!updateLevel) {
+            return;
+        }
+        updateLevel = true;
+
         if (res.getLevelTiles() != null) {
             res.getLevelTiles().freeObjectGroup();
         }

@@ -1,6 +1,7 @@
 package game;
 
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import state.GameLevel;
 import state.GameState;
 import org.lwjgl.glfw.GLFW;
@@ -18,7 +19,7 @@ public class GameEngine implements Runnable {
         controls = new KeyboardControls(window);
 
         state.setMode(GameState.GameMode.LEVEL_EDITOR);
-        state.setCurrentLevel(new GameLevel(new GameLevel.Tile[][] {{GameLevel.Tile.HIT_BLOCK, GameLevel.Tile.QBLOCK}, {GameLevel.Tile.ROCK, GameLevel.Tile.ROCK_GRASS}}, 2, 2));
+        state.setCurrentLevel(new GameLevel(new GameLevel.Tile[10][10], 10, 10));
     }
 
     @Override
@@ -44,10 +45,24 @@ public class GameEngine implements Runnable {
         double timeDelta = time - lastTime;
 
         Vector2f cameraMove = new Vector2f();
-        controls.getCameraMove().mul((float) (8.0 * timeDelta), cameraMove);
+        controls.getCameraMove().mul((float) (10.0 * timeDelta), cameraMove);
         state.getCameraPos().add(cameraMove);
 
-        state.getEditorSelectorPos().add(controls.getEditorSelectorMove());
+        Vector2i editorPos = state.getEditorSelectorPos();
+        editorPos.add(controls.getEditorSelectorMove());
+        if (editorPos.x < 0) {
+            editorPos.x = 0;
+        }
+        if (editorPos.y < 0) {
+            editorPos.y = 0;
+        }
+        if (editorPos.x >= state.getCurrentLevel().getWidth()) {
+            editorPos.x = state.getCurrentLevel().getWidth() - 1;
+        }
+        if (editorPos.y >= state.getCurrentLevel().getHeight()) {
+            editorPos.y = state.getCurrentLevel().getHeight() - 1;
+        }
+
         controls.resetEditorSelectorMove();
 
         if (controls.getEditorSelectedTileMove() > 0) {
@@ -56,6 +71,12 @@ public class GameEngine implements Runnable {
             state.previousEditorSelectedTile();
         }
         controls.resetEditorSelectedTileMove();
+
+        if (controls.getEditorSelectorPlace()) {
+            state.getCurrentLevel().getTiles()[state.getEditorSelectorPos().x()][state.getEditorSelectorPos().y()] = state.getEditorSelectedTile();
+            state.updateCurrentLevel();
+            controls.resetEditorSelectorPlace();
+        }
 
         return time;
 

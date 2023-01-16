@@ -53,6 +53,10 @@ public class GameState {
 
     public void setCurrentLevel(GameLevel currentLevel) {
         this.currentLevel = currentLevel;
+        updateCurrentLevel();
+    }
+
+    public void updateCurrentLevel() {
         for (RenderObserver observer : renderObservers) {
             observer.updateLevel();
         }

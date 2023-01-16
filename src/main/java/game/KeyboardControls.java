@@ -11,6 +11,7 @@ public class KeyboardControls implements IControls {
     private final Vector2f cameraMove = new Vector2f();
     private final Vector2i editorSelectorMove = new Vector2i();
     private int editorSelectedTileMove = 0;
+    private boolean editorSelectorPlace = false;
 
     private Input4Dir cameraMoveInput = new Input4Dir();
     private Input4Dir editorSelectorMoveInput = new Input4Dir();
@@ -63,6 +64,9 @@ public class KeyboardControls implements IControls {
                 if (value) {
                     editorSelectedTileMove = 1;
                 }
+                break;
+            case GLFW_KEY_SPACE:
+                editorSelectorPlace = editorSelectorPlace || value;
                 break;
         }
 
@@ -122,6 +126,16 @@ public class KeyboardControls implements IControls {
     @Override
     public void resetEditorSelectedTileMove() {
         editorSelectedTileMove = 0;
+    }
+
+    @Override
+    public boolean getEditorSelectorPlace() {
+        return editorSelectorPlace;
+    }
+
+    @Override
+    public void resetEditorSelectorPlace() {
+        editorSelectorPlace = false;
     }
 
     private static class Input4Dir {

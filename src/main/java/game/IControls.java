@@ -9,4 +9,6 @@ public interface IControls {
     void resetEditorSelectorMove();
     int getEditorSelectedTileMove();
     void resetEditorSelectedTileMove();
+    boolean getEditorSelectorPlace();
+    void resetEditorSelectorPlace();
 }
