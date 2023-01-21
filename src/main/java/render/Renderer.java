@@ -23,14 +23,14 @@ public class Renderer implements GameState.RenderObserver {
     private int framesPerSecond;
     boolean updateLevel = false;
 
-    public Renderer(IWindow window, GameState state) {
+    public Renderer(IWindow window, GameState state) throws Exception {
         this.window = window;
         this.state = state;
         res = ResourceCache.getInstance();
 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LEQUAL);
-        glEnable(GL_MULTISAMPLE);
+        // glEnable(GL_MULTISAMPLE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_CULL_FACE);

@@ -4,7 +4,7 @@ import state.GameState;
 import render.Renderer;
 import render.resources.ResourceCache;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL33.*;
 
 public abstract class PixelatedStrategy implements IRenderStrategy {
     @Override
@@ -23,6 +23,7 @@ public abstract class PixelatedStrategy implements IRenderStrategy {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         renderer.renderScene(res.getCropScene());
+
     }
 
     protected abstract void renderPixelated(GameState state, Renderer renderer);

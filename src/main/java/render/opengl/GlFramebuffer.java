@@ -50,7 +50,11 @@ public class GlFramebuffer {
     }
 
     public void bind() {
-        glBindFramebuffer(GL_FRAMEBUFFER, framebufferId);
+        bind(GL_FRAMEBUFFER);
+    }
+
+    public void bind(int target) {
+        glBindFramebuffer(target, framebufferId);
         glViewport(0, 0, width, height);
     }
 

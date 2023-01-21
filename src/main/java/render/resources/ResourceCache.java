@@ -3,10 +3,7 @@ package render.resources;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import render.*;
-import render.camera.BasicCamera;
-import render.camera.Camera2D;
-import render.camera.CroppedFillScreenCamera;
-import render.camera.ICamera;
+import render.camera.*;
 import render.opengl.*;
 import render.shaders.SpritesShader;
 import state.GameLevel;
@@ -49,8 +46,6 @@ public class ResourceCache {
     private final GlRenderObjectSingleGroup levelEditorSelector;
 
     private ResourceCache() throws Exception {
-        levelShader = new SpritesShader("levelShader_v.glsl", "levelShader_f.glsl");
-
         createSquareMesh();
 
         levelTiles = null;
@@ -58,7 +53,9 @@ public class ResourceCache {
         levelEditorSelector = new GlRenderObjectSingleGroup("selector.png");
     }
 
-    public void setupWindowRendering(Renderer renderer) {
+    public void setupWindowRendering(Renderer renderer) throws Exception {
+        levelShader = new SpritesShader("levelShader_v.glsl", "levelShader_f.glsl");
+
         IWindow window = renderer.getWindow();
 
         // Screen Framebuffer (id: 0)
@@ -69,7 +66,8 @@ public class ResourceCache {
         pixelatedBuffer = new GlFramebuffer(Arrays.asList(pixelatedTexture), true);
         Sprite pixelatedSprite = new Sprite(pixelatedTexture);
         GlRenderObjectGroup objectGroup = new GlRenderObjectGroup(Arrays.asList(new GlRenderObject(pixelatedSprite, new Matrix4f())), pixelatedTexture, 1);
-        ICamera cropCamera = new CroppedFillScreenCamera(window, (float) GAME_WIDTH / GAME_HEIGHT);
+        // ICamera cropCamera = new CroppedFillScreenCamera(window, (float) GAME_WIDTH / GAME_HEIGHT);
+        ICamera cropCamera = new CroppedIntegerScaleCamera(window, GAME_WIDTH, GAME_HEIGHT);
         cropScene = new RenderScene(cropCamera, Arrays.asList(objectGroup), screenTarget);
 
         // tileScene setup
@@ -88,6 +86,7 @@ public class ResourceCache {
 
     private void createSquareMesh() {
         squareMesh = new Mesh();
+        float halfPixel = 1.0f / 32.0f;
         squareMesh.getVertices().setData(new float[] {
                 -0.5f, -0.5f, 0.0f,
                 0.5f, -0.5f, 0.0f,
